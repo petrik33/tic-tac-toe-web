@@ -9,7 +9,7 @@ export default function Board({
     onPlay
 }) {
     const winLine = calculateWinningLine(squares);
-    const winner = null;
+    const winner = calculateWinner(winLine, squares);
     const end = calculateEnd(squares);
     let status = getStatus(end, winner, nextIsX);
 
