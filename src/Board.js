@@ -8,8 +8,7 @@ export default function Board({
     squares,
     onPlay
 }) {
-    const winLine = calculateWinningLine(squares);
-    const winner = calculateWinner(winLine, squares);
+    const [winLineIdx, winner] = calculateWinner(squares);
     const end = calculateEnd(squares);
     let status = getStatus(end, winner, nextIsX);
 
@@ -30,18 +29,38 @@ export default function Board({
     }
 
     const boardSquares = Array(boardHeight);
+
+    let squareWinning;
+    if (winLineIdx == -1) {
+        squareWinning = () => false;
+    } else {
+        let winLine = lines[winLineIdx];
+        squareWinning = (idx) => {
+            for (let square of winLine) {
+                if (idx == square) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
     for (let i = 0; i < boardHeight; i++) {
         const rowSquares = Array(boardWidth);
+
         for (let j = 0; j < boardWidth; j++) {
             let idx = i * boardWidth + j;
+
             rowSquares[j] = (
                 <Square
                     key={j}
                     value={squares[idx]}
+                    winning={squareWinning(idx)}
                     onSquareClick={() => handleSquareClick(idx)}
                 />
             );
         }
+
         boardSquares[i] = (<div key={i} className='board-row'>{rowSquares}</div>);
     }
 
@@ -73,23 +92,16 @@ function calculateEnd(squares) {
     return true;
 }
 
-function calculateWinningLine(squares) {
+function calculateWinner(squares) {
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
         if (squares[a] &&
             (squares[a] === squares[b]) &&
             (squares[a] === squares[c])) {
-            return i;
+            return [i, squares[a]];
         }
     }
-    return -1;
-}
-
-function calculateWinner(winLine, squares) {
-    if (winLine == -1) {
-        return null;
-    }
-    return squares[winLine[0]];
+    return [-1, null];
 }
 
 const lines = [
@@ -100,5 +112,5 @@ const lines = [
     [1, 4, 7],
     [2, 5, 8],
     [0, 4, 8],
-    [2, 4, 6]
+    [2, 4, 6],
 ];

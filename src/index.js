@@ -7,6 +7,6 @@ import App from "./App";
 const root = createRoot(document.getElementById("root"));
 root.render(
   <StrictMode>
-    <App />
+    <App boardWidth={3} boardHeight={3} />
   </StrictMode>
 );

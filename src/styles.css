@@ -1,7 +1,6 @@
 * {
   box-sizing: border-box;
 }
-
 body {
   font-family: sans-serif;
   margin: 20px;
@@ -71,6 +70,9 @@ body {
   width: 34px;
 }
 
+.winning {
+  border: 2px solid rgb(21, 245, 5);
+}
 .board-row:after {
   clear: both;
   content: '';
